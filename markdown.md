@@ -76,5 +76,5 @@
 
 ![image](https://user-images.githubusercontent.com/87008955/126438977-f2f709f0-5e66-46bf-8fd0-66102390811d.png)
 
-가장 중요한 문서 출처는 :  [github markdown사용법](https://gist.github.com/ihoneymon/652be052a0727ad59601, "markdown link")
+가장 중요한 문서 출처는 :  <https://gist.github.com/ihoneymon/652be052a0727ad59601>
 

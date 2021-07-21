@@ -7,7 +7,7 @@
 
 ***
 
-2. >문자를 사용해 앞에 블럭을 사용할 수 있다
+2. ">"문자를 사용해 앞에 블럭을 사용할 수 있다
 
 ![image](https://user-images.githubusercontent.com/87008955/126437607-6931c2c2-5932-4d2c-aab7-61410bc03b0a.png)
 

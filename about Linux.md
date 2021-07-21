@@ -34,6 +34,7 @@
     - 체계적인 기술지원 네트워크가 없다
     - 오픈소스 소프트웨어가 풍부하게 있지만 , 리눅스용 상용 소프트웨어가 부족하다 
 
+***
 - 리눅스와 유닉스의 차이점 
 
 ![image](https://user-images.githubusercontent.com/87008955/126441026-f2eb19cf-adda-45d2-a381-74c0b0ff211a.png)

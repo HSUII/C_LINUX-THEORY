@@ -80,6 +80,9 @@
 
 ![image](https://user-images.githubusercontent.com/87008955/126451413-79a63cfb-0157-43a4-a8b0-b8f3bd8ebdaf.png)
 
+![image](https://user-images.githubusercontent.com/87008955/126451599-117990da-822f-42ff-8b50-30e03e2177dd.png)
+
+
 **표 작성하는 게 좀 어려운거같다. TAB 하고 표를 작성할 수 없던데 이부분은 좀 더 알아봐야할거같다**
 
 가장 중요한 문서 출처는 :  <https://gist.github.com/ihoneymon/652be052a0727ad59601>

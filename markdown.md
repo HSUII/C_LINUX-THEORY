@@ -40,6 +40,10 @@
  
  ![image](https://user-images.githubusercontent.com/87008955/126438181-d8afdac3-3021-46a9-b2dd-180bbc02952f.png)
 
+ - "```"뒤에 사용하는 언어를 적어두면 그거에 맞춰 highlighting이 된다!
+![image](https://user-images.githubusercontent.com/87008955/126577240-7db9cfb1-9c14-47fb-bd6e-5a908047876f.png)
+
+
 ***
 
 ### 6. 수평선 

@@ -1,4 +1,4 @@
-##VI 편집기 단축키 정리
+## VI 편집기 단축키 정리
 
 ![image](https://user-images.githubusercontent.com/87008955/126459639-a9bbd8ad-c58f-46a8-8e67-3c1472de3603.png)
 

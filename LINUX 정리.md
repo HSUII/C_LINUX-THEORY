@@ -123,6 +123,9 @@ $ctags-R
    ``` $make //명령어 컴파일 ```
    ``` $make foo ```
    와 같이 컴파일 시 gcc-o foo foo1.c foo2.c 와 같은 실행효과를 낸다
+   
+   ![image](https://user-images.githubusercontent.com/87008955/127813047-da1953da-343a-4c85-95fb-afe8ce5acb6a.png)
+
 
    - clean 구문 추가
    ```

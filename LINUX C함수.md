@@ -46,7 +46,7 @@ ex) ```if(feof(src)!=0) puts("파일복사 성공");```
 ```int feek(FILE * stram, long offset, int wherefrom);```
 
 
-출처: [파일 입출력][https://blog.naver.com/ddongzzizzi/222326993828]
+출처:  [파일 입출력][https://blog.naver.com/ddongzzizzi/222326993828]
 ***
 
 ## DIRECTORY

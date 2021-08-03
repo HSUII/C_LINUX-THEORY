@@ -60,15 +60,15 @@ ex) ```if(feof(src)!=0) puts("파일복사 성공");```
 ```int chdir(const char *path)```:디렉토리 이동 
 
 ### 디렉토리 정보 검색 
-- opendir
-``DIR *opendir(const char *dirname);``` 
+- opendir   
+```DIR *opendir(const char *dirname);``` 
    - dirname: 열려는 디렉토리명
    - 리턴값: 열린 디렉토리를 가리키는 dir 포인터 / 실패시 null 포인터 
-- closedir
+- closedir   
 ```int closedir(DIR *dirp);```
    - dirp: 닫으려는 디렉토리를 가르키는 포인터
    - 리턴값: 성공하면 0/ 실패시 -1
-- readdir
+- readdir    
 ```struct dirent *readdir(DIR *dirp);```
    - 리턴값: dir 포인터가 가르키는 디렉토리의 내용을 하나씩 읽어와 리턴(dirent 구조체로 리턴)/ 더이상 읽을것이 없으면 NULL 리턴
    - dirent 구조체

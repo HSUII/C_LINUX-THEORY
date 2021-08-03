@@ -1,7 +1,7 @@
 # LINUX C언어 함수
    
  *** 
- ## standard i/o library
+ ## standard I/O library
 : c언어에서 입출력을 처리하기 위한 함수 
 
 ### fopen 
@@ -47,7 +47,38 @@ ex) ```if(feof(src)!=0) puts("파일복사 성공");```
 
 
 출처: [파일 입출력][https://blog.naver.com/ddongzzizzi/222326993828]
+***
 
+## DIRECTORY
+### 디렉토리 관리 
+- rename
+```int rename(const char *old,const char *new);```
+: old = 변경할 파일, new = 새파일명, 리턴값 : 성공:0/실패:-1 
+- getcwd
+```char *getcwd(char *buf, size_t size)```:현재 작업 디렉토리 위치를 size의 buf에 저장  
+- chdir
+```int chdir(const char *path)```:디렉토리 이동 
+
+### 디렉토리 정보 검색 
+- opendir
+``DIR *opendir(const char *dirname);``` 
+   - dirname: 열려는 디렉토리명
+   - 리턴값: 열린 디렉토리를 가리키는 dir 포인터 / 실패시 null 포인터 
+- closedir
+```int closedir(DIR *dirp);```
+   - dirp: 닫으려는 디렉토리를 가르키는 포인터
+   - 리턴값: 성공하면 0/ 실패시 -1
+- readdir
+```struct dirent *readdir(DIR *dirp);```
+   - 리턴값: dir 포인터가 가르키는 디렉토리의 내용을 하나씩 읽어와 리턴(dirent 구조체로 리턴)/ 더이상 읽을것이 없으면 NULL 리턴
+   - dirent 구조체
+   - ![image](https://user-images.githubusercontent.com/87008955/127965575-a2aa8a9b-dded-49f2-9743-e53d28fe5470.png)
+ 
+- ```long telldir(DIR *dirp)```: 현재 위치를 알려줌
+- ```void seekdir(DIR *dirp, long loc)```: 디렉토리 오프셋을 loc으로 이동 
+- ```void rewinddir(DIR *dirp)```: 오프셋을 0으로 초기화
+
+***
  ## WRITE
  1)서버에 로그인하고 있는 사용자에게 간단하게 메시지 보내는 명령어 
  사용자가 시스템관리자 ROOT에게 메세지 보낼 수 있다. 
@@ -69,5 +100,4 @@ ex) ``` read(0,buffer,128); // 0 = 파일 디스크립터의 스탠다드 입출
 
 - ```fread```
 ***
-ㅇㄻ
 

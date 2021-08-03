@@ -46,7 +46,7 @@ ex) ```if(feof(src)!=0) puts("파일복사 성공");```
 ```int feek(FILE * stram, long offset, int wherefrom);```
 
 
-출처:  [파일 입출력][https://blog.naver.com/ddongzzizzi/222326993828]
+출처:  [파일 입출력](https://blog.naver.com/ddongzzizzi/222326993828)
 ***
 
 ## DIRECTORY
@@ -78,7 +78,7 @@ ex) ```if(feof(src)!=0) puts("파일복사 성공");```
 - ```void seekdir(DIR *dirp, long loc)```: 디렉토리 오프셋을 loc으로 이동 
 - ```void rewinddir(DIR *dirp)```: 오프셋을 0으로 초기화
 
-출처:[파일 관련 명령어][https://blog.naver.com/gaechuni/221151125087]
+출처:[파일 관련 명령어](https://blog.naver.com/gaechuni/221151125087)
 ***
  ## WRITE
  1)서버에 로그인하고 있는 사용자에게 간단하게 메시지 보내는 명령어 

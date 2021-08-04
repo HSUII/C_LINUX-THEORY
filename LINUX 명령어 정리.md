@@ -9,6 +9,14 @@
  -e : 실행환경   
  -f : 시스템의 모든 프로세스   
  -ef : 프로세스 소유자, 번호, PID, CPU 사용량 등..
+ -aux | grep hslee : 특정 사용자의 프로세스 출력      
+ 
+ ![image](https://user-images.githubusercontent.com/87008955/128140232-0aa57d2c-cac1-41d1-b928-d7b7bb3696f8.png)
+ 
+ -프로세스 상태    
+ 
+![image](https://user-images.githubusercontent.com/87008955/128140335-00a6bc9f-c948-455b-905e-76ae52119060.png)
+
  
 ### top
 :실시간으로 프로세스 정보 확인할 수 있는 명령어 ```q```로 정지

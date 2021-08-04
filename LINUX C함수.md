@@ -135,8 +135,36 @@ int main(){
 ```
 **메모리 할당시에는 꼭 ```free(memory 변수명)``` 해줘야 한다.**
 
+- void * calloc(size_t number_of_elements, size_t element,size);
+- void * realloc(void *exitsting_memory,size_t new_size);
+- 
+**보통은 배열을 쓰고, 배열 크기가 크고 너무 변화가 심할때만 malloc사용**
 
+## lock
+: 다른사람이 사용하지 못하고 독점적으로 사용할 수 있도록 lock 하는것
+```
+const char *lock_file = "/tmp/LCK.test2";
 
+int main(){
+   int file_desc;
+   int tries =10;
+   
+   while(tries--){
+   file_dsec = open(lock_file,O_RDWR|O_CREAT|O_EXCL, 0444);
+      if(file_desc == -1){
+         print("%d - lock already present\n",getpid());
+         sleep(3);
+      }
+      else{
+         printf("%d - i have exclusive access\n",getpid());
+         sleep(1)
+         (void)close(file_desc);
+         (void)unlink(lock_file);
+         sleep(2)
+      }
+      exit(EXIT_SUCCESS);
+   }
+}
 
 
 

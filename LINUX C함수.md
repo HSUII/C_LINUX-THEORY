@@ -142,7 +142,8 @@ int main(){
 
 ## lock
 : 다른사람이 사용하지 못하고 독점적으로 사용할 수 있도록 lock 하는것
-```
+
+```C
 const char *lock_file = "/tmp/LCK.test2";
 
 int main(){
@@ -166,7 +167,7 @@ int main(){
    }
 }
 
-
+```
 
 
 

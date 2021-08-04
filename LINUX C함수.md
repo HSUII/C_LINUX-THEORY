@@ -102,6 +102,49 @@ ex) ``` read(0,buffer,128); // 0 = 파일 디스크립터의 스탠다드 입출
 - ```fread```
 ***
 
+## SYSLOG
+:로그 출력하는 함수      
+![image](https://user-images.githubusercontent.com/87008955/128126547-f3031d85-7f1e-4305-af03-53c83d151ca2.png)
+
+## MAPPING
+:메모리 동적할당
+
+```c
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+#define A_MEGABYTE (1024 * 1024)
+
+int main(){
+    char *some_memory;
+    int megabyte = A_MEGABYTE;
+    int exit_code = EXIT_FAILURE;
+
+
+    some_memory = (char *)malloc(megabyte);
+    if (some_memory != NULL) {
+        sprintf(some_memory,"HELLO WORLD\n");
+        printf("%s",some_memory);
+        exit_code = EXIT_SUCCESS;
+
+    }
+    exit(exit_code);
+
+}
+```
+**메모리 할당시에는 꼭 free memory해줘야 한다. **
+
+
+
+
+
+
+
+
+
+
+***
 ## C언어 문법
 1. "->" = (포인터 변수). 멤버 
 EX) p1.next -> next = (*p1.next).next

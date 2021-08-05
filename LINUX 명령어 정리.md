@@ -62,7 +62,16 @@ stop된걸 다시 작동시키려면 kill 명령어를 수행해야한다.
 
 ![image](https://user-images.githubusercontent.com/87008955/127808565-cb3b7fa1-acbf-43e6-a899-1a97ada73e56.png)
 
+***
+## 환경변수 설정
+```
+$ echo PATH
+$ echo $PATH
+$ PATH=$PATH:./
+```
+이렇게 하면 ./안치고도 파일을 실행시킬수 있다. 
 
+***
      
 ## ctags
 

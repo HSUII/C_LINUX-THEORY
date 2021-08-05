@@ -193,6 +193,51 @@ fork()를 하는 순간 자식 프로세스가 생겨난다.
 
 - fork 리턴값: 자식-0 부모-PID
 
+***
+## IN&OUT REDIRECTION
+### freopen
+```FILE* freopen(const char* filename, const char* mode,FILE* stream);```   
+스트림을 다른파일이나 mode로 다시 연다. 
+freopen 함수는 먼저 세번째 인자로 전달된 스트림에 해당하는 파일을 닫는다. (close)    
+그 후 파일이 성공적으로 닫혔든 안닫혔든 간에, freopen 함수는 첫번째 인자로 전달된 파일 이름에 해당하는 파일을 두번쨰 인자로 전달된 mode에 맞게 연다.
+이 함수는 특히 이미 정의된 표준 입력(stdin) 표준출력(stdout) 표준 오류(stderr) 와 같은 스트림들을 특정한 파일에 해당하는 스트림으로 변경할 수 있다.
+<mode>
+   
+- ```filename```
+: 열을 파일의 이름을 포함하는 c 문자열, 특히 freopen 함수가 실행되는 환경에 따라 파일에 경로에 대한 정보도 포함할 수있다. 
+(예로 윈도우에선 filename에 "C:\a.txt"를 전달하면 c 드라이브에 a.txt 파일을 열게 된다. 이때 \를 두개 붙ㅇ야하는데 c언어에서는 \하나를 탈출문자로 사용되기 떄문이다)
+- ```mode```
+: 파일접근 방식에 대한 정보
+ ![image](https://user-images.githubusercontent.com/87008955/128281089-5cf10a17-3a5d-4920-9cb8-c74ac4d4e074.png)
+- ```stream```
+: 작업을 수행할 스트림의 FILE 객체에 대한 포인터
+- 리턴값 : 성공->세번째 인자 스트림 포인터/실패->널포인터
+
+```c
+   
+#include <unistd.h>
+#include <stdio.h>
+#include <stdio.h>
+
+int main(int argc, char *argv[]){
+   char *filename;
+   if(argv!=2){
+      fprintf(stderr,"usage: useupeer file\n");
+      exit(1);
+   }
+   filename = argv[1];
+   if(!freopen(filename,"r",stdin) {
+      fprintf(stderr,"could not redirect stdin from file %s\n",filename);
+      exit(2);
+   }
+   execl("./upper","upper",0);
+   perror("could not exec ./upper");
+   exit(3);
+   
+ }
+   
+```
+***
 
 ***
 ## C언어 문법

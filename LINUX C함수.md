@@ -238,7 +238,28 @@ int main(int argc, char *argv[]){
    
 ```
 ***
-
+## SIGNAL
+   
+```c
+#include <signal.h>
+#include <stdio.h>
+#include <unistd.h>
+   
+void ouch(int sig)
+   {
+   printf(*OUCH! -I GOT SIGANL %d\n",sig);
+   (void) signal(SIGINT, SIG_DFL);
+   }
+int main(){
+   (void) signal(SIGINT, such);
+   
+   while(1){
+      printf("HELLO WORLD\n");
+      sleep(1);
+   }
+}
+```   
+   
 ***
 ## C언어 문법
 1. "->" = (포인터 변수). 멤버 

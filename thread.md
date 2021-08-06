@@ -7,6 +7,18 @@ thread: 프로세스 내 에 제어 흐름으로 하나의 프로그램 안에�
 
 ![image](https://user-images.githubusercontent.com/87008955/128475321-5455d359-babb-4aeb-99b9-c7202de71e2d.png)
 
+## thread 필요한 함수 
+
+
+```c
+#include <pthread.h>
+
+int pthread_create(pthread_t *thread, pthread_attr_t *attr,void*(*start_routine)(void *),void *arg);
+void pthread_exit(void *retval);
+
+int pthread_join(pthread_t thread, void **thread_return);
+
+```
 
 ## thread 프로그램
 ```c

@@ -7,7 +7,7 @@ thread: 프로세스 내 에 제어 흐름으로 하나의 프로그램 안에�
 
 ![image](https://user-images.githubusercontent.com/87008955/128475321-5455d359-babb-4aeb-99b9-c7202de71e2d.png)
 
-## thread 필요한 함수 
+## thread API
 
 
 ```c
@@ -61,5 +61,33 @@ sleep(3);
 strcpy(message,"Bye!");
 pthred_exit("thank u for the cpu time");
 }
+```
+*** 
+
+# SEMAPHORE
+: 전역변수를 공유하지 않고 하나의 쓰레드만 사용할 수 있도록 하는 함수 
+-> 상호배제
+## API
+
+```c
+#include <semaphore.h>
+
+int sem_init(sem_t *sem, int pshared, unsigned int value);
+int sem_wait(sem_t *sem); //세마포어 실행 변수 접근 금지 -> 기다리고있음
+int sem_post(sem_t *sem); //세마포어 끝 WAIT 하고있는 쓰레드 실행
+int sem_destory(sem_t *sem);
+
+```
+
+## MUTEX
+
+### API
+
+```C
+#include <pthread.h>
+int pthread_mutex_init(pthread_mutex_t *mutex,const pthread_mutexattr_t *mutexattr);
+int pthread_mutex_lock(pthread_mutex_t *mutex); //=wait
+int ptherad_mutex_unlock(pthread_mutex_t *mutex);//=post
+int ptherad_mutex_destory(pthread_mutex_t *mutex);
 ```
 

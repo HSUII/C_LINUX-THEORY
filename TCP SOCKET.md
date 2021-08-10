@@ -25,13 +25,13 @@ int socket(int domain,int type,int protocol);
   - type(ex)SOCK_STREAM)     
   - protocol(ex)0) ->프로토콜 인자를 0으로 설정하면 시스템에서 자동으로 domain 인자에 대해서는 PF_INET, type인자에 대해서는 SOCK_STREAM으로 설정하는데, 이는 TCP 프로토콜을 의미한다. 0대신 IPPROTO_TCP를 사용해도된다         
 - 예시) 
-```
+```c
 int socket;
 socket = socket(PF_INET, SOCK_STREAM,0);
 ```
 
 2. 연결할 주소 준비: 클라이언트로부터 서비스 요청을 받을 서버의 주소(IP, PORT)를 결정해서 구조체 변수에 저장한다. 
-```
+```c
 struct sockaddr_in s_addr;
 
 memset(&s_addr, 0 , sizeof(s_addr);
@@ -43,7 +43,7 @@ s_addr.sin_port = htons(7000);
 ```
 3. 주소에 연결(bind): 소켓을 프로토콜 주소에 연결한다.
 - 함수 
-```
+```c
 #include <sys/socket.h>
 int bind(int sock_fc,const struct sockaddr *addr,int addrlen)
 ```
@@ -53,7 +53,7 @@ int bind(int sock_fc,const struct sockaddr *addr,int addrlen)
   - addr: 서버가 처리할 자료의 목적지 ip주소와 포트 번호를 지닌 주소 
   - addrlen: 주소의 길이 
   - ex
- ```
+ ```c
  int s_socket;
  struct sockaddr_in s_addr;
  bind(s_socket, (struct sockaddr *)&s_addr, sizeof(s_addr))
@@ -63,7 +63,7 @@ int bind(int sock_fc,const struct sockaddr *addr,int addrlen)
  
 4. 개통요청(listen): 클라이언트로부터 연결 요청이 오면 받아들일 수 있도록 한다. 
 - 함수
-```
+```c
 #include <sys/socket.h>
 int listen(int sock_fd, int backlog)
 ```
@@ -72,7 +72,7 @@ int listen(int sock_fd, int backlog)
   - sock_fd
   - backlog: 이소켓으로 통신하려고 큐에서 대기하는 클라이언트의 수 ex)backlog=10인경우 현재 연결완료된 소켓수+연결설정 진행중인 소켓의 수 = 최대 10개
  - ex
- ```
+ ```c
 int s_socket;
 listen(s_socket,0);
 ```
@@ -90,7 +90,7 @@ listen 함수를 호출할 때 두번쨰 인자 backlog로 커널이 관리하�
 예를들어 ip 주소가 163.1.2.3인 클라이언트에서 소켓 c를 생성하고 200번 포트를 통해 162.5.6.7이고 포트 번호 7000으로 연결 요청한다.    
 이때 서버와 연결된 클라이언트 소켓은 [163.1.2.3 : 200, 162.5.6.7 : 700]으로 표현한다.
 - 함수
-```
+```c
 #include <sys/socket.h>
 int accept(int sock_fd,struct sockaddr *c_addr,int *len);
 ```
@@ -100,7 +100,7 @@ int accept(int sock_fd,struct sockaddr *c_addr,int *len);
   - c_addr: 클라이언트의 프로토콜 주소를 저장하는 구조체 변수 
   - len:c_addr에 저장된프로토콜 주소의 길이 
  - 예시
- ```
+ ```c
  int s_socket, c_socket;
  int lne;
  struct sockaddr_in c_addr;
@@ -118,8 +118,13 @@ s_socket은 서버의 ip 주소와 포트 번호로 구성된 접속점과 연�
 
 6. 자료의 송수신(read/write): 서버와 클라이언트가 약속된 규약에 따라 자료를 송수신하는 과정     
 연결소켓[163.1.2.3 : 200, 162.5.6.7 : 700]으로 클라이언트와 자료를 송수신하며 서비스를 제공한다. 
-- write: 사용자 영역의 버퍼 내용을 커널의 송신 버퍼로 복사 
-
+- ```write```: 사용자 영역의 버퍼 내용을 커널의 송신 버퍼로 복사한다. 커널은 해당 소켓의 송신 버퍼에 복사된 데이터를 응용프로그램과 관계없이 tcp/ip규약에 따라 원격지의 수신 버퍼로 전송한다. 
+  - 블로킹모드: 응용프로그램이 자료를 write 함수를 호출해서 쓸 때 해당 데이터가 모두 커널의 해당 소켓 송신 버퍼로 복사될 때까지 응용프로그램으로 복귀하지 못하고 차단된다. 
+  - 비블로킹모드: 송신 버퍼에 전혀 여유 공간이 없어 사용자 영역의 버퍼 내용을 한 바이트도 복사할 수 없다면 EWOULDBLOCK오류와 함께 즉시 응용프로그램으로 복귀하고, 송신 버퍼에 여유공간이 있으면 그만큼을 사용자 영역의 버퍼에서 복사한다. 해당 소켓의 송신 버퍼에 공간 상황에 따라 전체 내용중 일부만을 송신 버퍼로 복사하는 경우가 생긴다. 이때는 나머지 내용을 송신 버퍼로 복사하도록 응용프로그램이 WRITE 함수를 다시 호출해야 한다. 
+- 송신버퍼->수신버퍼: 수신 버퍼의 공간 상황에 따라 크기를 수신측으로부터 지정받아, 한번에 그 크기만큼을 전송한다. 송신측응용프로그램에서 한번에 전송했어도 실제로는 원격지로 전송할때는 여러 번에 걸쳐 나누어서 수신측에 전송하기도 한다. 이런경우를 자료의 경계가 없다고 한다 
+- ```read```  : 커널의 해당소켓의 수신버퍼로부터 사용자영역의 버퍼로 자료를 복사해온다. 
+  - 블로킹모드:커널의 해당소켓에 수신버퍼에 내용이 전혀 없으면 차단되어 수신 버퍼에 데이터가 도착할 때까지 기다린다. 
+  - 비블로킹모드:수신버퍼가 완전히 비어있으면  EWOULDVLOCK이라는 오류와 함께 read함수는 즉시 응용프로그램으로 복귀한다. 만약 한 바이트라도 데이터가 있으면 수신버퍼의 내용을 사용자 영역의 버퍼로 복사해 온다. 
 
 7. 연결 종료(close/shutdown): 클라이언트와의 연결 소켓을 종료한다.
 

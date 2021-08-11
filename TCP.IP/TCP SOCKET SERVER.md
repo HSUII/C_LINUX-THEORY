@@ -129,6 +129,55 @@ s_socket은 서버의 ip 주소와 포트 번호로 구성된 접속점과 연�
 - ```write```: 사용자 영역의 버퍼 내용을 커널의 송신 버퍼로 복사한다. 커널은 해당 소켓의 송신 버퍼에 복사된 데이터를 응용프로그램과 관계없이 tcp/ip규약에 따라 원격지의 수신 버퍼로 전송한다. 
   - 블로킹모드: 응용프로그램이 자료를 write 함수를 호출해서 쓸 때 해당 데이터가 모두 커널의 해당 소켓 송신 버퍼로 복사될 때까지 응용프로그램으로 복귀하지 못하고 차단된다. 
   - 비블로킹모드: 송신 버퍼에 전혀 여유 공간이 없어 사용자 영역의 버퍼 내용을 한 바이트도 복사할 수 없다면 EWOULDBLOCK오류와 함께 즉시 응용프로그램으로 복귀하고, 송신 버퍼에 여유공간이 있으면 그만큼을 사용자 영역의 버퍼에서 복사한다. 해당 소켓의 송신 버퍼에 공간 상황에 따라 전체 내용중 일부만을 송신 버퍼로 복사하는 경우가 생긴다. 이때는 나머지 내용을 송신 버퍼로 복사하도록 응용프로그램이 WRITE 함수를 다시 호출해야 한다. 
+  - 함수
+  ```c
+  #include <unistd.h>
+  int write(int sock_fd,void *buf,int count);
+  ```
+  - 반환값 성공시: 실제로 복사한 데이터의 크기 / 실패시: -1 
+  - 인자
+    - sock_fd
+    - buf
+    - count:소켓의 송신 버퍼로 복사해 올수있는 최대 크기
+  - 예시
+  ```c
+  int sock_fd,n;
+  char sendBuffer[BUFSIZE];
+  n = write(sock_fd,sendBuffer,BUFSIZE);
+  
+- ```send```: TCP통신할때 소켓만 사용할 있는 함수 
+  - 함수
+  ```c
+  #include <sys/types.h>
+  #include <sys/socket.h>
+  
+  int send(int sock_fd, void *buf, int len, int flags);
+  ```
+  - 반환값 성공시: 복사한데이터크기 / 실패시: -1
+  - 인자 
+    - sock_fd
+    - buf
+    - len
+    - flag
+  - 예시 : sock_fd로 지정한 해당 소켓의 수신 버퍼로부터 인자 len으로 지정한 크기만큼을 buf가 가르키는 주소로 가져와서 실제 가져온 데이터 크기를 반환한다.
+  ```c
+  int n_send = 100; //클라이언트가 100바이트를 송신했을경우 
+  char rcvBuffer[200];
+  int n,n_left,n_recv;//read함수를 여러번 호출해서 클라이언트가 전송한 자료를 모두 처리하기 위한 변수 
+  int c_socket;
+  int n_send =100;
+
+  n_left = n_send;
+  n_recv=0;
+  while(n_left>0){
+    if((n=write(c_socket,&rcvBuffer[n_recv],n_left))<0){  
+      return(-1);
+    }
+    n_left = n_left -n; //소켓으로부터 읽으려는 자료의 크기(n_left)보다 실제 읽은 자료의 크기 n이 적으면 두 크기의 차이만큼 추가적으로 복사하기위해 반복으로 write 호출
+    n_recv = n_recv +n;
+  }
+  ```
+
 - ```송신버퍼->수신버퍼```: 수신 버퍼의 공간 상황에 따라 크기를 수신측으로부터 지정받아, 한번에 그 크기만큼을 전송한다. 송신측응용프로그램에서 한번에 전송했어도 실제로는 원격지로 전송할때는 여러 번에 걸쳐 나누어서 수신측에 전송하기도 한다. 이런경우를 자료의 경계가 없다고 한다 
 
 
@@ -146,6 +195,44 @@ s_socket은 서버의 ip 주소와 포트 번호로 구성된 접속점과 연�
     - buf:받은 내용을 저장할 사용자 영역의 버퍼 주소 
     - count:소켓의 수신 버퍼에서 복사해 올 수 있는 최대 크기 [byte]
     
+    
+    
+- ```recv```: 소켓으로부터 자료를 갖고오는 함수, 다른 파일에서는 사용하지못하고 오직 소켓에서만 사용할 수 있다. 
+- 함수
+```c
+#include <sys/tyoes.h>
+#include <sys/socket.h>
+
+int recv(int sock_fd,void *buf,size_t len, int flags);
+```
+- 반환값 성공시: 실제로 가져온 데이터의 크기(바이트) / 실패시: -1
+- 인자
+   - sock_fd: 원격지와의 수신에 사용할 소켓
+   - buf: 받은 내용을 저장할 사용자 영역의 버퍼 주소 
+   - len: 소켓의 수신 버퍼에서 가져올 수 있는 최대 크기[byte]
+   - flag
+- 예시 : sock_fd로 지정한 해당 소켓의 수신 버퍼로부터 인자 len으로 지정한 크기만큼을 buf가 가르키는 주소로 가져와서 실제 가져온 데이터 크기를 반환한다.
+```c
+int n_send = 100; //클라이언트가 100바이트를 송신했을경우 
+char rcvBuffer[200];
+int n,n_left,n_recv;//read함수를 여러번 호출해서 클라이언트가 전송한 자료를 모두 처리하기 위한 변수 
+int c_socket;
+int n_send =100;
+
+n_left = n_send;
+n_recv=0;
+while(n_left>0){
+  if((n=read(c_socket,&rcvBuffer[n_recv],n_left))<0){  
+    return(-1);
+  }
+  n_left = n_left -n; //소켓으로부터 읽으려는 자료의 크기(n_left)보다 실제 읽은 자료의 크기 n이 적으면 두 크기의 차이만큼 추가적으로 읽기위해 반복으로 read 호출
+  n_recv = n_recv +n;
+}
+```
+
+
+```
+
 **5. 연결 종료(close/shutdown): 클라이언트와의 연결 소켓을 종료한다.**                  
 1)**close**         
 - 함수 

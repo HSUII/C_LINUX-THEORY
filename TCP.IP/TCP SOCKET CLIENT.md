@@ -112,3 +112,6 @@ read_line(int sd,char *temp){
   *temp = *r_ptr++;
   return(1);
 }
+```
+#### 연결 종료 
+close함수를 호출하면 커널에서 일정시간 경과후 연결 종료 

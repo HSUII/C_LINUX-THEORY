@@ -46,6 +46,18 @@ ex) ```if(feof(src)!=0) puts("파일복사 성공");```
 :파일 위치 지시자의 참조 위치를 변경시키는 함수 
 ```int feek(FILE * stram, long offset, int wherefrom);```
 
+### sscanf
+: 문자열로부터 데이터를 읽어내는 함수 
+```sscanf(문자열,"%c",&a);```
+예시
+```c
+char sent[] = "i'm 24 years old";
+int age;
+sscanf(sent,"%*s%d",&age);
+```
+=>%d가 나오기전까지 문자열을 무시하고 %d가 나오면 변수 age에 값을 저장해라 
+*이붙으면 무시하고 없이 %가 나올시 변수저장
+
 
 출처:  [파일 입출력](https://blog.naver.com/ddongzzizzi/222326993828)
 ***

@@ -134,30 +134,38 @@ int main(int argc,char *argv[]){
 }
 
 ````
-HTTP2 CHECKER는 기본적으로 TCP/IP 서버 CLIENT 소스코드를 기반으로 구현한다. 
+HTTP2 CHECKER는 기본적으로 TCP/IP 서버 CLIENT 소스코드를 기반으로 구현한다.        
 
-<추가되는 기능> 
-1. 도메인 주소를 IP로 변환시켜 서버와 TCP/IP 통신 가능 
-2. 서버에게 HTTP2를 확인할 수 있는 헤더를 메세지에 담아 전송 
-3. 서버가 보낸 메세지를 받아 HTTP2 지원여부 판단 가능  
+<추가되는 기능>      
+1. 도메인 주소를 IP로 변환시켜 서버와 TCP/IP 통신 가능     
+2. 서버에게 HTTP2를 확인할 수 있는 헤더를 메세지에 담아 전송     
+3. 서버가 보낸 메세지를 받아 HTTP2 지원여부 판단 가능      
 
-이 기능 3가지를 추가하기 위해
+이 기능 3가지를 추가하기 위해    
 
-처음으로 도메인 주소를 IP로 변환하기 위해 매개변수로 받아온 도메인을 ```gethostbyname```함수를 이용하여 ip 주소로 변환하여 저장한다. 
-이때 int형이나 char형으로 저장하면 안되고 hostent 구조체에 ip 주소를 저장해야 정상적으로 변환이 가능하다. 
-ip가 저장된 hostent 구조체를 이용하여 소켓의 서버 주소 값에 저장한다. 
-```server_addr.sin_addr = *((struct in addr *)he->h_addr); //server_addr=sockaddr_in, he=hostent```
+처음으로 도메인 주소를 IP로 변환하기 위해 매개변수로 받아온 도메인을 ```gethostbyname```함수를 이용하여 ip 주소로 변환하여 저장한다.    
+이때 int형이나 char형으로 저장하면 안되고 hostent 구조체에 ip 주소를 저장해야 정상적으로 변환이 가능하다.       
+ip가 저장된 hostent 구조체를 이용하여 소켓의 서버 주소 값에 저장한다.     
+```server_addr.sin_addr = *((struct in addr *)he->h_addr); //server_addr=sockaddr_in, he=hostent```    
 
-두번째 기능은 간단하게 소켓에 담겨 전송될 버퍼에 헤더를 담아 저장하면 된다 . 
-```sprintf(buf, "GET / HTTP/1.1 HOST ~~ ");```
+두번째 기능은 간단하게 소켓에 담겨 전송될 버퍼에 헤더를 담아 저장하면 된다 .        
+```sprintf(buf, "GET / HTTP/1.1 HOST ~~ ");```      
 
-마지막으로 서버와 연결한후 서버가 응답을 전송해주면 소켓을 버퍼에 저장한 후에    
-버퍼의 내용에 정상적인 응답코드 101이 담겨있는지 비교한다 .     
-비교한 후 101 코드가 들어있는 경우 지원하는 사이트라는 문장을 출력한다. 
+마지막으로 서버와 연결한후 서버가 응답을 전송해주면 소켓을 버퍼에 저장한 후에          
+버퍼의 내용에 정상적인 응답코드 101이 담겨있는지 비교한다 .           
+비교한 후 101 코드가 들어있는 경우 지원하는 사이트라는 문장을 출력한다.    
 
 
 
-### 결과 
-1. 지원하는 경우    
+### 출력결과     
+1. 지원하는 경우      
+
+![image](https://user-images.githubusercontent.com/87008955/133050850-94e44225-56a4-42a4-8964-e71053ffff3a.png)
+
+2. 지원하지 않거나 http/2를 우선적으로 인식하지 않는 경우
+
+![image](https://user-images.githubusercontent.com/87008955/133050980-58472b9e-4ed6-4394-b7fc-cc17f1c3ec33.png)
+
+
 
 

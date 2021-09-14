@@ -266,7 +266,7 @@ json_decref(root);
 ```json_t *json_load_file(const char *path, size_t flags, json_error_t *error);```
 
 2. json_dump_file: json object로 json 데이터가 들어있는 파일을 생성해준다 
-```int json_dump_file(const json_t *json, const char *path, size_t flags);
+```int json_dump_file(const json_t *json, const char *path, size_t flags);```
 
 
 

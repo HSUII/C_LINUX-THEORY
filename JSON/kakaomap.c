@@ -20,7 +20,7 @@ int isexist =0;
 int j;
 int length;
 /* forward refs */
-/*
+
 void print_json(json_t *root);
 void print_json_aux(json_t *element, int indent);
 void print_json_indent(int indent);
@@ -136,12 +136,12 @@ void print_json_null(json_t *element, int indent) {
         print_json_indent(indent);
         printf("JSON Null\n");
 }
-*/
+
 /*
  *  * Parse text into a JSON object. If text is valid JSON, returns a
  *   * json_t structure, otherwise prints and error and returns null.
  *    */
-/*
+
 json_t *load_json(const char *text) {
         json_t *root;
         json_error_t error;
@@ -155,19 +155,19 @@ json_t *load_json(const char *text) {
                 return (json_t *)0;
         }
 }
-*/
+
 /*
  *  * Print a prompt and return (by reference) a null-terminated line of
  *   * text.  Returns NULL on eof or some error.
  *    */
-/*
+
 char *read_line(char *line, int max_chars) {
         printf("Type some JSON > ");
         fflush(stdout);
         return fgets(line, max_chars, stdin);
 }
 
-*/
+
 
 /* ================================================================
  *  * main

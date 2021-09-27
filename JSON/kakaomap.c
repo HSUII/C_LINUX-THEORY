@@ -12,13 +12,55 @@
 
 
 
-#define BUF_LEN 128
+#define BUF_LEN 4096
 #define h_addr h_addr_list[0]
 #define PORT 80
 #define MAX_CHARS (1024 * 8)
+#define DEFAULT_SIZE 512
+#define COMM_MAX         5
+
 int isexist =0;
 int j;
 int length;
+
+typedef struct Document_t {
+        char        id                  [DEFAULT_SIZE]  ;
+        char        place_name          [DEFAULT_SIZE]  ;
+        char        category_group_code [DEFAULT_SIZE]  ;
+        char        category_group_name [DEFAULT_SIZE]  ;
+        char        category_name       [DEFAULT_SIZE]  ;
+        char        phone               [DEFAULT_SIZE]  ;
+        char        address_name        [DEFAULT_SIZE]  ;
+        char        road_address_name   [DEFAULT_SIZE]  ;
+        char        x                   [DEFAULT_SIZE]  ;
+        char        y                   [DEFAULT_SIZE]  ;
+        char        place_url           [DEFAULT_SIZE]  ;
+        char        distance            [DEFAULT_SIZE]  ;
+} Document ;
+
+typedef struct Region_t {
+        char        region              [DEFAULT_SIZE]  ;
+} Region ;
+
+typedef struct SameName_t {
+        Region      regions             [COMM_MAX]              ;
+        char        keyword             [DEFAULT_SIZE]  ;
+        char        selected_region     [DEFAULT_SIZE]  ;
+} SameName ;
+
+typedef struct Meta_t {
+        int         total_count                                              ;
+        int         pageable_count                                           ;
+        short       is_end                                                   ;
+        SameName    same_name                                                ;
+} Meta ;
+
+typedef struct DataSet_t {
+        Document    documents           [COMM_MAX]              ;
+        Meta        meta                                                     ;
+} DataSet ;
+
+
 /* forward refs */
 
 void print_json(json_t *root);
@@ -160,21 +202,24 @@ json_t *load_json(const char *text) {
  *  * Print a prompt and return (by reference) a null-terminated line of
  *   * text.  Returns NULL on eof or some error.
  *    */
-
+/*
 char *read_line(char *line, int max_chars) {
         printf("Type some JSON > ");
         fflush(stdout);
         return fgets(line, max_chars, stdin);
 }
 
-
+*/
 
 /* ================================================================
  *  * main
  *   */
 
-char *str[1024];
+char str[4096];
 char *temp;
+json_t *root;
+json_error_t error;
+char ptr[4096];
 
 int main(int argc,char *argv[]){
 
@@ -231,7 +276,7 @@ int main(int argc,char *argv[]){
         while((n=read(s,buf,BUF_LEN))>0){
                 printf("%s",buf);
 
-                char* temp = strstr(buf,"{\"");
+                char* temp = strstr(buf,"{");
                 if(temp){
                         isexist=1;
                 }
@@ -243,18 +288,22 @@ int main(int argc,char *argv[]){
                 }
 
 
-
-
+                char *temp = strstr(str,"{");
                 printf("\n\n\n\n\n\n\n\n\n\n");
-                printf("================new buf====================\n");
+                printf("================  JSON DATA  ====================\n");
 
-                printf("%s\n",str);
-
-                memset(buf,0,sizeof(buf));
-                memset(str,0,sizeof(str));
+                printf("%s\n", temp);         //자른 문자 출력
+                printf("\n\n\n\n\n\n\n\n\n\n");
 
                 length = strlen(str);
-                for(j=0;j<length;j++){
+/*
+                printf("\n\n\n\n\n\n\n\n\n\n");
+                printf("================  ptr  ====================\n");
+
+                printf("%s\n",ptr);
+*/
+
+                /*              for(j=0;j<length;j++){
 
                 //       parse text into JSON structure
 
@@ -268,8 +317,34 @@ int main(int argc,char *argv[]){
                         }
 
                 }
+*/
 
 
+                root = json_loads( temp, 0, &error );
+                if ( !root )
+                {
+                            fprintf( stderr, "error: on line %d: %s\n", error.line, error.text );
+                                    return 1;
+                }
 
+                const char *key;
+                json_t *value;
+
+                void *iter = json_object_iter( root );
+                while( iter )
+                {
+                            key = json_object_iter_key(iter);
+                            value = json_object_iter_value(iter);
+
+                            //printf("Key: %s, Value: %f\n", key, json_real_value(value) );
+
+                            iter = json_object_get(root, "keyname");
+                }
+
+                print_json(root);
+                json_decref(root);
+
+                memset(buf,0,sizeof(buf));
+                memset(str,0,sizeof(str));
                 close(s);
         }
